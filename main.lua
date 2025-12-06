@@ -47,7 +47,7 @@ testScores["math"] = 91 -- can set index as a string rather than just numbers
 for i,s in ipairs(testScores)do
     message = message+s
 end
-
+ 
 function love.draw()
     love.graphics.setFont(love.graphics.setNewFont(50))
     --love.graphics.print(output)
