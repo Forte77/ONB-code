@@ -1,6 +1,6 @@
 --Alt+L to run with LOVE
 message = 0
---[[message = 5
+message = 5
 chicken = 10
 output = chicken * message
 condition = -25
@@ -13,13 +13,15 @@ else
     message = "no conditions met!"
 end
 while message < 10 do
-    message = message + 1p
+    message = message + 1
+    love.graphics.print(message)
 end
 for i=0,3,1 do
     pickle = pickle + i
 end
 function increaseMessage(i) --increase message variable
     message = message + i
+    love.graphics.print(message)
 end
 function double(val) --doubles parameter value
     val = val *2
@@ -27,12 +29,13 @@ function double(val) --doubles parameter value
 end
 message = double(12)
 chicken = double(message)
+love.graphics.print(chicken)
 function getHalf(i)
     local var = i
     var = var/2
     return var
 end
-]]
+
 --tables. variables but for multiple pieces of data. basically array
 --testScores = {} -- empty table
 --testScores[1] = 95 --index does NOT start at 0 in lua
@@ -47,9 +50,9 @@ testScores["math"] = 91 -- can set index as a string rather than just numbers
 for i,s in ipairs(testScores)do
     message = message+s
 end
- 
 function love.draw()
     love.graphics.setFont(love.graphics.setNewFont(50))
     --love.graphics.print(output)
     love.graphics.print(message)
 end
+-- Making a new file to work on the shooting gallery game
