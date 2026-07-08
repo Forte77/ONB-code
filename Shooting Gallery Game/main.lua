@@ -1,3 +1,5 @@
+--Alt L to run 
+-- love2d.org/wiki
 function love.load()
     target = {}
     target.x = 100

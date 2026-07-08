@@ -1,4 +1,5 @@
 --Alt+L to run with LOVE
+-- love2d.org/wiki
 message = 0
 message = 5
 chicken = 10
