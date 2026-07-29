@@ -2,6 +2,8 @@
 -- love2d.org/wiki
 --cloned windfield to make working with physics easier
 function love.load()
+    anim8 = require 'libraries/anim8/anim8'
+    
     wf =  require 'libraries/windfield/windfield'
     world = wf.newWorld(0,800, false) -- add the last bit to stop "object sleeping"
     world:setQueryDebugDrawing(true)
@@ -52,6 +54,8 @@ function love.keypressed(key)
         end
     end
 end
+-- open source library for animations. anim8
+
 function love.mousepressed(x,y,button)
     if  button == 1 then 
         local colliders = world:queryCircleArea(x,y,200,{'Platform','Danger'}) -- container that has a list of all colliders in the radius {optional parameters to look for}
