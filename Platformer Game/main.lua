@@ -7,6 +7,7 @@ function love.load()
     sprites = {} --spritesheet
     sprites.playerSheet = love.graphics.newImage('sprites/playerSheet.png')
     local grid = anim8.newGrid(614,564,sprites.playerSheet:getWidth(), sprites.playerSheet:getHeight()) -- grid to go with sheet. Width and height for the cell then width and height for the whole sheet.
+    
     animations = {}-- the animation itself.
     animations.idle = anim8.newAnimation(grid('1-15',1),0.05)--15 frames of the idle animation
     animations.jump = anim8.newAnimation(grid('1-7',2),0.05) -- jump animation
@@ -26,7 +27,8 @@ function love.load()
     player.speed = 240 --Colliders are like tables so we can give them properties
     player.animation = animations.idle
     player.isMoving = false
-
+    player.direction = 1 --1 to the right -1 to the left
+    
     platform = world:newRectangleCollider(250,400,300,100, {collision_class = 'Platform'}) --Colliders have body,fixture and shape
     -- 3 types of colliders. Dynamic(moves/falls), static(doens't move), Kinematic(can be moved can only collide with dynamic object)
     platform:setType('static')
@@ -43,10 +45,12 @@ function love.update(dt)
         if love.keyboard.isDown('right') then --Move Right
             player:setX(px+player.speed*dt)
             player.isMoving = true
+            player.direction = 1
         end
         if love.keyboard.isDown('left') then --Move Left
             player:setX(px-player.speed*dt)
             player.isMoving = true
+            player.direction = -1
         end
 
         if player:enter('Danger') then 
@@ -63,7 +67,7 @@ end
 function love.draw()
     world:draw()
     local px,py = player:getPosition() -- get position of player to draw the animation in the right spot.
-    player.animation:draw(sprites.playerSheet, px,py,nil,0.25,nil,130,300)
+    player.animation:draw(sprites.playerSheet, px,py,nil,0.25*[player.direction],0.25,130,300)
 end
 --Jump
 function love.keypressed(key)
