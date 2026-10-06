@@ -19,16 +19,7 @@ function love.load()
     world:addCollisionClass('Player'--[[, {ignores = {'Platform'}}]])
     world:addCollisionClass('Platform')
     world:addCollisionClass('Danger')
-    
-    -- Collider (windfield) combines physics body fixture and shape to one object. Physics object = collider
-    player = world:newRectangleCollider(360,100,40,100, {collision_class = 'Player'}) -- x y w h
-    player:setFixedRotation(true)
-
-    player.speed = 240 --Colliders are like tables so we can give them properties
-    player.animation = animations.idle
-    player.isMoving = false
-    player.direction = 1 --1 to the right -1 to the left
-    
+    require('player')
     platform = world:newRectangleCollider(250,400,300,100, {collision_class = 'Platform'}) --Colliders have body,fixture and shape
     -- 3 types of colliders. Dynamic(moves/falls), static(doens't move), Kinematic(can be moved can only collide with dynamic object)
     platform:setType('static')
@@ -38,42 +29,16 @@ function love.load()
 end
 function love.update(dt)
     world:update(dt)
-    --Grab player position for movement
-    if player.body then
-        player.isMoving = false
-        local px, py = player:getPosition()
-        if love.keyboard.isDown('right') then --Move Right
-            player:setX(px+player.speed*dt)
-            player.isMoving = true
-            player.direction = 1
-        end
-        if love.keyboard.isDown('left') then --Move Left
-            player:setX(px-player.speed*dt)
-            player.isMoving = true
-            player.direction = -1
-        end
-
-        if player:enter('Danger') then 
-            player:destroy()
-        end
-    end
-    if player.isMoving then
-        player.animation = animations.run
-    else
-        player.animation = animations.idle
-    end
-    player.animation:update(dt)
+    playerUpdate(dt)
 end
 function love.draw()
     world:draw()
-    local px,py = player:getPosition() -- get position of player to draw the animation in the right spot.
-    player.animation:draw(sprites.playerSheet, px,py,nil,0.25*[player.direction],0.25,130,300)
+    drawPlayer()
 end
 --Jump
 function love.keypressed(key)
     if key == 'up' then -- half the player width, add half player height, player width
-        local colliders = world:queryRectangleArea(player:getX()-20,player:getY()+50,40,2,{'Platform'}) --using querying for colliders. Making a thin rectangle right below player.
-        if #colliders > 0 then
+        if player.grounded then
             --Body:applyLinearImpulse
             player:applyLinearImpulse(0,-4000)
         end
